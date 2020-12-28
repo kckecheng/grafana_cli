@@ -7,8 +7,8 @@ import (
 
 // DataSource object
 type DataSource struct {
-	ID          int64                  `json:"id"`
-	OrgID       int64                  `json:"orgId"`
+	ID          uint64                 `json:"id"`
+	OrgID       uint64                 `json:"orgId"`
 	Name        string                 `json:"name"`
 	Type        string                 `json:"type"`
 	TypeLogoURL string                 `json:"typeLogoUrl"`

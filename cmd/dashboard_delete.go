@@ -11,7 +11,6 @@ var (
 	dduid string // dashboard delete uid
 )
 
-// dashboardCmd represents the dashboard command
 var dashboardDeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Delete a dashboard",

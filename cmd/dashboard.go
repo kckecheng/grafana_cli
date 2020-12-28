@@ -4,7 +4,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// dashboardCmd represents the dashboard command
 var dashboardCmd = &cobra.Command{
 	Use:   "dashboard",
 	Short: "operate dashboards",

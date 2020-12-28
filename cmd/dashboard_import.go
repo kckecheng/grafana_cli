@@ -8,17 +8,16 @@ import (
 )
 
 var (
-	difpath    string // dashboard import file path
+	dipath     string // dashboard import file path
 	difolderid uint64 // dashboard import folder ID
 )
 
-// dashboardCmd represents the dashboard command
 var dashboardImportCmd = &cobra.Command{
 	Use:   "import",
 	Short: "Import a dashboard",
 	Run: func(cmd *cobra.Command, args []string) {
 		c := connectGrafana()
-		err := c.DashboardImport(difpath, difolderid)
+		err := c.DashboardImport(dipath, difolderid)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -27,7 +26,7 @@ var dashboardImportCmd = &cobra.Command{
 }
 
 func init() {
-	dashboardImportCmd.Flags().StringVar(&difpath, "path", "", "Dashboard file path")
+	dashboardImportCmd.Flags().StringVar(&dipath, "path", "", "Dashboard file path")
 	dashboardImportCmd.Flags().Uint64Var(&difolderid, "folderid", 0, "Folder ID for the imported dashboard")
 	dashboardImportCmd.MarkFlagRequired("folderid")
 	dashboardImportCmd.MarkFlagRequired("path")
