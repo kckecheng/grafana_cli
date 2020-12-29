@@ -33,3 +33,14 @@ Usage
   ./grafana_cli dashboard --help
   ./grafana_cli dashbaord export --help
   ./grafana_cli dashboard export --uid 'qpQbDyxMk' --path dashboard1.json
+
+Coverage
+--------
+
+Functions as below (which are used for automation during my daily usage) are implemented:
+
+- Annotation: list, create, delete;
+- Dashboard: list, export, import, delete, panel (list panels of a dashboard);
+- Data Source: list, export, import, delete;
+- Folder: list, create, delete;
+- Snapshot: list, export, delete.
