@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	deuid  string // dashboard export UID
-	depath string // dashboard export file path
+	dashboardExportUID  string
+	dashboardExportPath string
 )
 
 var dashboardExportCmd = &cobra.Command{
@@ -17,7 +17,7 @@ var dashboardExportCmd = &cobra.Command{
 	Short: "Export a dashboard",
 	Run: func(cmd *cobra.Command, args []string) {
 		c := connectGrafana()
-		err := c.DashboardExport(depath, deuid)
+		err := c.DashboardExport(dashboardExportPath, dashboardExportUID)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -26,8 +26,8 @@ var dashboardExportCmd = &cobra.Command{
 }
 
 func init() {
-	dashboardExportCmd.Flags().StringVar(&deuid, "uid", "", "Dashboard UID")
-	dashboardExportCmd.Flags().StringVar(&depath, "path", "", "Dashboard exported file path")
+	dashboardExportCmd.Flags().StringVar(&dashboardExportUID, "uid", "", "Dashboard UID")
+	dashboardExportCmd.Flags().StringVar(&dashboardExportPath, "path", "", "Dashboard exported file path")
 	dashboardExportCmd.MarkFlagRequired("uid")
 	dashboardExportCmd.MarkFlagRequired("path")
 

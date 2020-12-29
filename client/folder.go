@@ -4,7 +4,7 @@ import "encoding/json"
 
 // Folder object
 type Folder struct {
-	ID        int64    `json:"id"`
+	ID        uint64   `json:"id"`
 	UID       string   `json:"uid"`
 	Title     string   `json:"title"`
 	URI       string   `json:"uri"`

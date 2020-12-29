@@ -18,7 +18,7 @@ type Client struct {
 
 // New init client
 func New(base, user, password string) Client {
-	request := resty.New().
+	request := resty.New().SetDisableWarn(true).
 		SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
 		R().
 		SetBasicAuth(user, password)

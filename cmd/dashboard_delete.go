@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	dduid string // dashboard delete uid
+	dashboardDeleteUID string
 )
 
 var dashboardDeleteCmd = &cobra.Command{
@@ -16,7 +16,7 @@ var dashboardDeleteCmd = &cobra.Command{
 	Short: "Delete a dashboard",
 	Run: func(cmd *cobra.Command, args []string) {
 		c := connectGrafana()
-		err := c.DashboardDelete(dduid)
+		err := c.DashboardDelete(dashboardDeleteUID)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -25,7 +25,7 @@ var dashboardDeleteCmd = &cobra.Command{
 }
 
 func init() {
-	dashboardDeleteCmd.Flags().StringVar(&dduid, "uid", "", "Dashboard UID for deletion")
+	dashboardDeleteCmd.Flags().StringVar(&dashboardDeleteUID, "uid", "", "Dashboard UID for deletion")
 	dashboardDeleteCmd.MarkFlagRequired("uid")
 
 	dashboardCmd.AddCommand(dashboardDeleteCmd)

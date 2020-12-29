@@ -6,7 +6,7 @@ import (
 
 var dashboardCmd = &cobra.Command{
 	Use:   "dashboard",
-	Short: "operate dashboards",
+	Short: "Operate dashboards",
 	Long:  `List, export, import and delete dashboards`,
 	// Run:   func(cmd *cobra.Command, args []string) {},
 }

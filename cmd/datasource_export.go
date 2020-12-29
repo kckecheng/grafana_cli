@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	dsename string // data source export name
-	dsepath string // data source export file path
+	datasourceExportName string
+	datasourceExportPath string
 )
 
 var datasourceExportCmd = &cobra.Command{
@@ -17,7 +17,7 @@ var datasourceExportCmd = &cobra.Command{
 	Short: "Export a data source",
 	Run: func(cmd *cobra.Command, args []string) {
 		c := connectGrafana()
-		err := c.DataSourceExport(dsename, dsepath)
+		err := c.DataSourceExport(datasourceExportName, datasourceExportPath)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -26,8 +26,8 @@ var datasourceExportCmd = &cobra.Command{
 }
 
 func init() {
-	datasourceExportCmd.Flags().StringVar(&dsename, "name", "", "Data source name")
-	datasourceExportCmd.Flags().StringVar(&dsepath, "path", "", "Data source exported file path")
+	datasourceExportCmd.Flags().StringVar(&datasourceExportName, "name", "", "Data source name")
+	datasourceExportCmd.Flags().StringVar(&datasourceExportPath, "path", "", "Data source exported file path")
 	datasourceExportCmd.MarkFlagRequired("name")
 	datasourceExportCmd.MarkFlagRequired("path")
 

@@ -8,18 +8,18 @@ import (
 
 // Annotation object
 type Annotation struct {
-	ID          int64                  `json:"id"`
-	AlertID     int64                  `json:"alertId"`
+	ID          uint64                 `json:"id"`
+	AlertID     uint64                 `json:"alertId"`
 	AlertName   string                 `json:"alertName"`
-	DashboardID int64                  `json:"dashboardId"`
-	PanelID     int64                  `json:"panelId"`
-	UserID      int64                  `json:"userId"`
+	DashboardID uint64                 `json:"dashboardId"`
+	PanelID     uint64                 `json:"panelId"`
+	UserID      uint64                 `json:"userId"`
 	NewState    string                 `json:"newState"`
 	PrevState   string                 `json:"prevState"`
-	Created     int64                  `json:"created"`
-	Updated     int64                  `json:"updated"`
-	Time        int64                  `json:"time"`
-	TimeEnd     int64                  `json:"timeEnd"`
+	Created     uint64                 `json:"created"`
+	Updated     uint64                 `json:"updated"`
+	Time        uint64                 `json:"time"`
+	TimeEnd     uint64                 `json:"timeEnd"`
 	Text        string                 `json:"text"`
 	Tags        []string               `json:"tags"`
 	Login       string                 `json:"login"`
@@ -30,7 +30,7 @@ type Annotation struct {
 
 // AnnotationList list annotations for a dashboard
 // Limitation - only 100 (default) annotations can be gotten for specified time period
-func (c Client) AnnotationList(dashboardID int64, from, to time.Time) ([]Annotation, error) {
+func (c Client) AnnotationList(dashboardID uint64, from, to time.Time) ([]Annotation, error) {
 	params := map[string]string{}
 	if dashboardID > 0 {
 		params["dashboardId"] = fmt.Sprintf("%d", dashboardID)
@@ -39,7 +39,7 @@ func (c Client) AnnotationList(dashboardID int64, from, to time.Time) ([]Annotat
 	tzeroMS := timeToEpochMS(time.Unix(0, 0))
 	fromMS := timeToEpochMS(from)
 	toMS := timeToEpochMS(to)
-	if fromMS > tzeroMS && toMS > tzeroMS && fromMS <= toMS {
+	if fromMS >= tzeroMS && toMS >= tzeroMS && fromMS <= toMS {
 		params["from"] = fmt.Sprintf("%d", fromMS)
 		params["to"] = fmt.Sprintf("%d", toMS)
 	}
@@ -58,7 +58,7 @@ func (c Client) AnnotationList(dashboardID int64, from, to time.Time) ([]Annotat
 }
 
 // AnnotationCreate create an annotation
-func (c Client) AnnotationCreate(dashboardID, panelID int64, from, to time.Time, text string, tag ...string) error {
+func (c Client) AnnotationCreate(dashboardID, panelID uint64, from, to time.Time, text string, tag ...string) error {
 	var tags []string
 	for _, t := range tag {
 		tags = append(tags, t)
@@ -77,7 +77,7 @@ func (c Client) AnnotationCreate(dashboardID, panelID int64, from, to time.Time,
 }
 
 // AnnotationDelete delete an annotation
-func (c Client) AnnotationDelete(id int64) error {
+func (c Client) AnnotationDelete(id uint64) error {
 	_, err := c.Delete(fmt.Sprintf("/annotations/%d", id))
 	return err
 }

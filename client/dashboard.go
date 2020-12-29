@@ -23,6 +23,12 @@ type Dashboard struct {
 	FolderURL   string   `json:"folderUrl"`
 }
 
+// Panel object definition - only the id and title
+type Panel struct {
+	ID    uint64 `json:"id"`
+	Title string `json:"title"`
+}
+
 // DashboardList list dashboards
 func (c Client) DashboardList() ([]Dashboard, error) {
 	resp, err := c.Get("/search", map[string]string{"type": "dash-db"})
@@ -95,4 +101,24 @@ func (c Client) DashboardExport(fpath, uid string) error {
 func (c Client) DashboardDelete(uid string) error {
 	_, err := c.Delete("/dashboards/uid/" + uid)
 	return err
+}
+
+// DashboardPanelList list panels of a dashboard
+func (c Client) DashboardPanelList(uid string) ([]Panel, error) {
+	resp, err := c.Get("/dashboards/uid/"+uid, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	dashboardDetail := struct {
+		Meta      map[string]interface{} `json:"meta"`
+		Dashboard struct {
+			Panels []Panel `json:"panels"`
+		} `json:"dashboard"`
+	}{}
+	err = json.Unmarshal(resp.Body(), &dashboardDetail)
+	if err != nil {
+		return nil, err
+	}
+	return dashboardDetail.Dashboard.Panels, nil
 }

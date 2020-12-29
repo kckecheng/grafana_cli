@@ -6,7 +6,7 @@ import (
 
 var datasourceCmd = &cobra.Command{
 	Use:   "datasource",
-	Short: "operate data sources",
+	Short: "Operate data sources",
 	Long:  `List, export, import and delete data sources`,
 	// Run:   func(cmd *cobra.Command, args []string) {},
 }

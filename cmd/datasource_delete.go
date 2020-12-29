@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	dsdname string // data source delete name
+	datasourceDeleteName string
 )
 
 var datasourceDeleteCmd = &cobra.Command{
@@ -16,7 +16,7 @@ var datasourceDeleteCmd = &cobra.Command{
 	Short: "Delete a data source",
 	Run: func(cmd *cobra.Command, args []string) {
 		c := connectGrafana()
-		err := c.DataSourceDelete(dsdname)
+		err := c.DataSourceDelete(datasourceDeleteName)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -25,7 +25,7 @@ var datasourceDeleteCmd = &cobra.Command{
 }
 
 func init() {
-	datasourceDeleteCmd.Flags().StringVar(&dsdname, "name", "", "Data source name")
+	datasourceDeleteCmd.Flags().StringVar(&datasourceDeleteName, "name", "", "Data source name")
 	datasourceDeleteCmd.MarkFlagRequired("name")
 
 	datasourceCmd.AddCommand(datasourceDeleteCmd)
