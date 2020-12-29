@@ -48,6 +48,10 @@ func (c Client) AnnotationList(dashboardID uint64, from, to time.Time) ([]Annota
 	if err != nil {
 		return nil, err
 	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return nil, fmt.Errorf("Unexpected return code: %v", code)
+	}
 
 	var annotations []Annotation
 	err = json.Unmarshal(resp.Body(), &annotations)
@@ -72,12 +76,26 @@ func (c Client) AnnotationCreate(dashboardID, panelID uint64, from, to time.Time
 		"tags":        tags,
 	}
 
-	_, err := c.Post("/annotations", payload)
-	return err
+	resp, err := c.Post("/annotations", payload)
+	if err != nil {
+		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
+	}
+	return nil
 }
 
 // AnnotationDelete delete an annotation
 func (c Client) AnnotationDelete(id uint64) error {
-	_, err := c.Delete(fmt.Sprintf("/annotations/%d", id))
-	return err
+	resp, err := c.Delete(fmt.Sprintf("/annotations/%d", id))
+	if err != nil {
+		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
+	}
+	return nil
 }

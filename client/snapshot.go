@@ -2,6 +2,7 @@ package client
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"time"
 )
@@ -26,6 +27,10 @@ func (c Client) SnapshotList() ([]Snapshot, error) {
 	if err != nil {
 		return nil, err
 	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return nil, fmt.Errorf("Unexpected return code: %v", code)
+	}
 
 	var snapshots []Snapshot
 	err = json.Unmarshal(resp.Body(), &snapshots)
@@ -41,6 +46,10 @@ func (c Client) SnapshotExport(key, fpath string) error {
 	resp, err := c.Get("/snapshots/"+key, nil)
 	if err != nil {
 		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
 	}
 
 	var snapshot map[string]interface{}
@@ -69,6 +78,13 @@ func (c Client) SnapshotExport(key, fpath string) error {
 
 // SnapshotDelete delete a snapshot
 func (c Client) SnapshotDelete(key string) error {
-	_, err := c.Delete("/snapshots/" + key)
-	return err
+	resp, err := c.Delete("/snapshots/" + key)
+	if err != nil {
+		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
+	}
+	return nil
 }

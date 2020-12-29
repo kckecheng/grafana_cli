@@ -35,6 +35,10 @@ func (c Client) DashboardList() ([]Dashboard, error) {
 	if err != nil {
 		return nil, err
 	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return nil, fmt.Errorf("Unexpected return code: %v", code)
+	}
 
 	dashboards := []Dashboard{}
 	err = json.Unmarshal(resp.Body(), &dashboards)
@@ -65,9 +69,13 @@ func (c Client) DashboardImport(fpath string, folderid uint64) error {
 	payload["folderId"] = folderid
 	payload["overwrite"] = false
 
-	_, err = c.Post("/dashboards/db", payload)
+	resp, err := c.Post("/dashboards/db", payload)
 	if err != nil {
 		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
 	}
 	return nil
 }
@@ -77,6 +85,10 @@ func (c Client) DashboardExport(fpath, uid string) error {
 	resp, err := c.Get("/dashboards/uid/"+uid, nil)
 	if err != nil {
 		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
 	}
 
 	// Format output and ignore the "meta" field
@@ -99,8 +111,15 @@ func (c Client) DashboardExport(fpath, uid string) error {
 
 // DashboardDelete delete a dashboard
 func (c Client) DashboardDelete(uid string) error {
-	_, err := c.Delete("/dashboards/uid/" + uid)
-	return err
+	resp, err := c.Delete("/dashboards/uid/" + uid)
+	if err != nil {
+		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
+	}
+	return nil
 }
 
 // DashboardPanelList list panels of a dashboard
@@ -108,6 +127,10 @@ func (c Client) DashboardPanelList(uid string) ([]Panel, error) {
 	resp, err := c.Get("/dashboards/uid/"+uid, nil)
 	if err != nil {
 		return nil, err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return nil, fmt.Errorf("Unexpected return code: %v", code)
 	}
 
 	dashboardDetail := struct {

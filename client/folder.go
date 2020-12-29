@@ -1,6 +1,9 @@
 package client
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 // Folder object
 type Folder struct {
@@ -21,6 +24,10 @@ func (c Client) FolderList() ([]Folder, error) {
 	if err != nil {
 		return nil, err
 	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return nil, fmt.Errorf("Unexpected return code: %v", code)
+	}
 
 	var folders []Folder
 	err = json.Unmarshal(resp.Body(), &folders)
@@ -32,12 +39,26 @@ func (c Client) FolderList() ([]Folder, error) {
 
 // FolderCreate create a folder
 func (c Client) FolderCreate(name string) error {
-	_, err := c.Post("/folders", map[string]interface{}{"title": name})
-	return err
+	resp, err := c.Post("/folders", map[string]interface{}{"title": name})
+	if err != nil {
+		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
+	}
+	return nil
 }
 
 // FolderDelete delete a folder
 func (c Client) FolderDelete(uid string) error {
-	_, err := c.Delete("/folders/" + uid)
-	return err
+	resp, err := c.Delete("/folders/" + uid)
+	if err != nil {
+		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
+	}
+	return nil
 }

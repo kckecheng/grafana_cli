@@ -2,6 +2,7 @@ package client
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 )
 
@@ -29,6 +30,10 @@ func (c Client) DataSourceList() ([]DataSource, error) {
 	if err != nil {
 		return nil, err
 	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return nil, fmt.Errorf("Unexpected return code: %v", code)
+	}
 
 	var dses []DataSource
 	err = json.Unmarshal(resp.Body(), &dses)
@@ -43,6 +48,10 @@ func (c Client) DataSourceExport(name, fpath string) error {
 	resp, err := c.Get("/datasources/name/"+name, nil)
 	if err != nil {
 		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
 	}
 
 	// Decode data source
@@ -82,15 +91,26 @@ func (c Client) DataSourceImport(name, fpath string) error {
 	if name != "" {
 		ds["name"] = name
 	}
-	_, err = c.Post("/datasources", ds)
+	resp, err := c.Post("/datasources", ds)
 	if err != nil {
 		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
 	}
 	return nil
 }
 
 // DataSourceDelete delete a data source
 func (c Client) DataSourceDelete(name string) error {
-	_, err := c.Delete("/datasources/name/" + name)
-	return err
+	resp, err := c.Delete("/datasources/name/" + name)
+	if err != nil {
+		return err
+	}
+	code := resp.StatusCode()
+	if code != 200 {
+		return fmt.Errorf("Unexpected return code: %v", code)
+	}
+	return nil
 }
