@@ -100,7 +100,7 @@ var annotationCreateCmd = &cobra.Command{
 func init() {
 	annotationCreateCmd.Flags().Uint64Var(&annotationCreateDashboardID, "dashboard", 0, "Dashboard ID")
 	annotationCreateCmd.Flags().UintSliceVar(&annotationCreatePanelIDs, "panel", []uint{}, "Panel IDs as --panel id1,id2,... or --panel id1 --panel id2 ... (all panels will be used if not specified)")
-	annotationCreateCmd.Flags().StringVar(&annotationCreateFromTime, "from", "", "From timestamp (RFC3339)")
+	annotationCreateCmd.Flags().StringVar(&annotationCreateFromTime, "from", "", "From timestamp (RFC3339, such as 2021-01-10T21:00:00+08:00)")
 	annotationCreateCmd.Flags().StringVar(&annotationCreateToTime, "to", "", "To timestamp (RFC3339)")
 	annotationCreateCmd.Flags().StringSliceVar(&annotationCreateTags, "tag", []string{}, "Annotation tags as --tag tag1,tag2,... or --tag tag1 --tag tag2 ...")
 	annotationCreateCmd.Flags().StringVar(&annotationCreateText, "text", "", "Annotation words")
